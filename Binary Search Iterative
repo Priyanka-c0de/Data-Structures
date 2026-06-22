@@ -1,0 +1,83 @@
+#include <stdio.h>
+
+// Function to sort the array in ascending order (Bubble Sort)
+void sort(int arr[], int n) {
+    int temp;
+    for (int i = 0; i < n - 1; i++) {
+        for (int j = 0; j < n - i - 1; j++) {
+            if (arr[j] > arr[j + 1]) {
+                temp = arr[j];
+                arr[j] = arr[j + 1];
+                arr[j + 1] = temp;
+            }
+        }
+    }
+}
+
+int main() {
+    int n;
+    
+    // Read n and validate (n <= 50)
+    if (scanf("%d", &n) != 1 || n > 50) {
+        return 1;
+    }
+
+    int arr[50];
+    // Read the n daily temperatures
+    for (int i = 0; i < n; i++) {
+        scanf("%d", &arr[i]);
+    }
+
+    // Sort ascending
+    sort(arr, n);
+
+    // Display sorted temperatures
+    for (int i = 0; i < n; i++) {
+        if (i > 0) printf(" ");
+        printf("%d", arr[i]);
+    }
+    printf("\n");
+
+    // 1. Iterative Binary search for the first day >= 30°C
+    int low = 0, high = n - 1;
+    int first_ge_30_idx = -1;
+    
+    while (low <= high) {
+        int mid = low + (high - low) / 2;
+        if (arr[mid] >= 30) {
+            first_ge_30_idx = mid;
+            high = mid - 1; // Keep searching left for earlier day
+        } else {
+            low = mid + 1;  // Search right
+        }
+    }
+
+    if (first_ge_30_idx != -1) {
+        printf("First >=30: index %d (%d)\n", first_ge_30_idx, arr[first_ge_30_idx]);
+    } else {
+        printf("First >=30: Not found\n");
+    }
+
+    // 2. Iterative Binary search for the last day <= 25°C
+    low = 0; 
+    high = n - 1;
+    int last_le_25_idx = -1;
+    
+    while (low <= high) {
+        int mid = low + (high - low) / 2;
+        if (arr[mid] <= 25) {
+            last_le_25_idx = mid;
+            low = mid + 1;  // Keep searching right for later day
+        } else {
+            high = mid - 1; // Search left
+        }
+    }
+
+    if (last_le_25_idx != -1) {
+        printf("Last <=25: index %d (%d)\n", last_le_25_idx, arr[last_le_25_idx]);
+    } else {
+        printf("Last <=25: Not found\n");
+    }
+
+    return 0;
+}
