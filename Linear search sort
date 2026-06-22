@@ -1,0 +1,71 @@
+#include <stdio.h>
+
+// Function to sort the array in ascending order (Bubble Sort)
+void sort(int arr[], int n) {
+    int temp;
+    for (int i = 0; i < n - 1; i++) {
+        for (int j = 0; j < n - i - 1; j++) {
+            if (arr[j] > arr[j + 1]) {
+                temp = arr[j];
+                arr[j] = arr[j + 1];
+                arr[j + 1] = temp;
+            }
+        }
+    }
+}
+
+int main() {
+    int n;
+    
+    // Read n and validate (n <= 50)
+    if (scanf("%d", &n) != 1 || n > 50) {
+        return 1;
+    }
+
+    int arr[50];
+    // Read the n book page counts
+    for (int i = 0; i < n; i++) {
+        scanf("%d", &arr[i]);
+    }
+
+    // Sort ascending
+    sort(arr, n);
+
+    // Display sorted page counts
+    for (int i = 0; i < n; i++) {
+        if (i > 0) printf(" ");
+        printf("%d", arr[i]);
+    }
+    printf("\n");
+
+    // 1. Linear search for the first book having >= 300 pages
+    int first_ge_300_idx = -1;
+    for (int i = 0; i < n; i++) {
+        if (arr[i] >= 300) {
+            first_ge_300_idx = i;
+            break; // Stop at the first match
+        }
+    }
+
+    if (first_ge_300_idx != -1) {
+        printf("First >=300: index %d (%d)\n", first_ge_300_idx, arr[first_ge_300_idx]);
+    } else {
+        printf("First >=300: Not found\n");
+    }
+
+    // 2. Linear search for the last book having <= 150 pages
+    int last_le_150_idx = -1;
+    for (int i = 0; i < n; i++) {
+        if (arr[i] <= 150) {
+            last_le_150_idx = i; // Keep updating to find the last match
+        }
+    }
+
+    if (last_le_150_idx != -1) {
+        printf("Last <=150: index %d (%d)\n", last_le_150_idx, arr[last_le_150_idx]);
+    } else {
+        printf("Last <=150: Not found\n");
+    }
+
+    return 0;
+}
