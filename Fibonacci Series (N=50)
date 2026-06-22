@@ -1,0 +1,42 @@
+#include <stdio.h>
+
+int main() {
+    int N;
+    long long fib[50];
+    long long a = 0, b = 1;          // two variables for iterative generation
+    long long sum = 0, largest = 0;
+
+    printf("Enter number of terms (1-50): ");
+    scanf("%d", &N);
+
+    // Input validation
+    if (N < 1 || N > 50) {
+        printf("Invalid input! Please enter terms between 1 and 50.\n");
+        return 0;
+    }
+
+    // Generate Fibonacci series iteratively and store in array
+    fib[0] = a;
+    if (N > 1) fib[1] = b;
+
+    for (int i = 2; i < N; i++) {
+        fib[i] = a + b;
+        a = b;
+        b = fib[i];
+    }
+
+    // Print series, calculate sum and largest term
+    printf("Fibonacci Series: ");
+    for (int i = 0; i < N; i++) {
+        printf("%lld", fib[i]);
+        if (i < N - 1) printf(" ");
+
+        sum += fib[i];
+        if (fib[i] > largest) largest = fib[i];
+    }
+
+    printf("\nSum of series: %lld\n", sum);
+    printf("Largest term: %lld\n", largest);
+
+    return 0;
+}
