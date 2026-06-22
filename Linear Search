@@ -1,0 +1,62 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <time.h>
+
+int main() {
+    int arr[10];
+    int choice, target;
+    int found = 0, position = -1, comparisons = 0;
+    clock_t start_time, end_time;
+    double cpu_time_used;
+
+    // Prompt for input method
+    printf("Enter 1 for manual input, 2 for random: ");
+    scanf("%d", &choice);
+
+    // Populate array based on choice
+    if (choice == 1) {
+        printf("Enter 10 integers:\n");
+        for (int i = 0; i < 10; i++) {
+            scanf("%d", &arr[i]);
+        }
+    } else if (choice == 2) {
+        srand(time(NULL));
+        for (int i = 0; i < 10; i++) {
+            arr[i] = rand() % 100; // Generates random numbers between 0 and 99
+        }
+    } else {
+        printf("Invalid choice.\n");
+        return 1;
+    }
+
+    printf("Enter target value: ");
+    scanf("%d", &target);
+
+    // Start timer and perform Linear Search
+    start_time = clock();
+    for (int i = 0; i < 10; i++) {
+        comparisons++;
+        if (arr[i] == target) {
+            found = 1;
+            position = i + 1; // 1-based indexing as requested
+            break;            // Stop at first occurrence
+        }
+    }
+    end_time = clock();
+
+    // Calculate time taken in milliseconds
+    cpu_time_used = ((double) (end_time - start_time)) / CLOCKS_PER_SEC * 1000.0;
+
+    // Display formatted output
+    if (found) {
+        printf("Target %d found at position %d\n", target, position);
+    } else {
+        printf("Target %d not found\n", target);
+    }
+    
+    printf("Comparisons made: %d\n", comparisons);
+    printf("Status: %s\n", found ? "Found" : "Not Found");
+    printf("Time taken: %.3f ms\n", cpu_time_used);
+
+    return 0;
+}
