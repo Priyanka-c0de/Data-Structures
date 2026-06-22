@@ -1,0 +1,73 @@
+#include <stdio.h>
+
+#define MAX 50
+#define N 10
+
+typedef struct {
+    int row, col, val;
+} Triple;
+
+void readSparse(Triple mat[], int *rows, int *cols, int *terms) {
+    scanf("%d %d %d", rows, cols, terms);
+    for (int i = 0; i < *terms; i++) {
+        scanf("%d %d %d", &mat[i].row, &mat[i].col, &mat[i].val);
+    }
+}
+
+int addSparse(Triple A[], int tA, Triple B[], int tB, Triple C[]) {
+    int i = 0, j = 0, k = 0;
+    while (i < tA && j < tB) {
+        if (A[i].row < B[j].row ||
+           (A[i].row == B[j].row && A[i].col < B[j].col)) {
+            C[k++] = A[i++];
+        } else if (B[j].row < A[i].row ||
+                  (B[j].row == A[i].row && B[j].col < A[i].col)) {
+            C[k++] = B[j++];
+        } else {
+            int sum = A[i].val + B[j].val;
+            if (sum != 0) {
+                C[k].row = A[i].row;
+                C[k].col = A[i].col;
+                C[k].val = sum;
+                k++;
+            }
+            i++;
+            j++;
+        }
+    }
+    while (i < tA) C[k++] = A[i++];
+    while (j < tB) C[k++] = B[j++];
+    return k;
+}
+
+void displayDense(Triple C[], int tC, int rows, int cols) {
+    int mat[N][N] = {0};
+    for (int i = 0; i < tC; i++) {
+        mat[C[i].row][C[i].col] = C[i].val;
+    }
+    printf("Sum Dense:\n");
+    for (int i = 0; i < rows; i++) {
+        for (int j = 0; j < cols; j++) {
+            printf("%d", mat[i][j]);
+            if (j < cols - 1) printf(" ");
+        }
+        printf("\n");
+    }
+}
+
+int main() {
+    Triple A[MAX], B[MAX], C[MAX * 2];
+    int rowsA, colsA, tA;
+    int rowsB, colsB, tB;
+
+    printf("Matrix 1 (rows cols terms):\n");
+    readSparse(A, &rowsA, &colsA, &tA);
+
+    printf("Matrix 2 (rows cols terms):\n");
+    readSparse(B, &rowsB, &colsB, &tB);
+
+    int tC = addSparse(A, tA, B, tB, C);
+    displayDense(C, tC, rowsA, colsA);
+
+    return 0;
+}
