@@ -1,0 +1,60 @@
+#include <stdio.h>
+#include <time.h>
+
+static long long recursiveCalls = 0;
+
+long long fib_recursive(int n) {
+    recursiveCalls++;               // count every call
+    if (n == 0) return 0;
+    if (n == 1) return 1;
+    return fib_recursive(n - 1) + fib_recursive(n - 2);
+}
+
+int main() {
+    int N;
+    printf("Enter N: ");
+    if (scanf("%d", &N) != 1 || N < 1) {
+        return 0;
+    }
+
+    // Iterative
+    struct timespec start1, end1;
+    clock_gettime(CLOCK_MONOTONIC, &start1);
+
+    long long a = 0, b = 1;
+    printf("Iterative: ");
+    if (N >= 1) printf("%lld ", a);
+    for (int i = 2; i <= N; i++) {
+        printf("%lld ", b);
+        long long next = a + b;
+        a = b;
+        b = next;
+    }
+
+    clock_gettime(CLOCK_MONOTONIC, &end1);
+    double iterativeTime = (end1.tv_sec - start1.tv_sec) * 1000.0 +
+                           (end1.tv_nsec - start1.tv_nsec) / 1e6;
+
+    printf("\n");
+
+    // Recursive
+    recursiveCalls = 0;
+    struct timespec start2, end2;
+    clock_gettime(CLOCK_MONOTONIC, &start2);
+
+    printf("Recursive: ");
+    for (int i = 0; i < N; i++) {
+        printf("%lld ", fib_recursive(i));
+    }
+
+    clock_gettime(CLOCK_MONOTONIC, &end2);
+    double recursiveTime = (end2.tv_sec - start2.tv_sec) * 1000.0 +
+                             (end2.tv_nsec - start2.tv_nsec) / 1e6;
+
+    printf("\n");
+    printf("Recursive Calls: %lld\n", recursiveCalls);
+    printf("Iterative Time: %.3f ms\n", iterativeTime);
+    printf("Recursive Time: %.3f ms\n", recursiveTime);
+
+    return 0;
+}
