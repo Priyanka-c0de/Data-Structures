@@ -1,0 +1,40 @@
+#include <stdio.h>
+
+int main() {
+    int n, arr[20], i, *ptr, a, b;
+
+    // Input number of elements
+    printf("Enter the number of elements: ");
+    scanf("%d", &n);
+
+    // Input array elements
+    printf("Enter elements:\n");
+    for (i = 0; i < n; i++) {
+        scanf("%d", &arr[i]);
+    }
+
+    // Input indices to find address difference
+    printf("Enter the two array indices to find address difference: ");
+    scanf("%d %d", &a, &b);
+
+    ptr = arr; // pointer points to the base address of array
+
+    // Display using array indexing
+    printf("\nUsing Array Indexing:\n");
+    for (i = 0; i < n; i++) {
+        printf("arr[%d] = %d\n", i, arr[i]);
+    }
+
+    // Display using pointer notation
+    printf("\nUsing Pointer Notation:\n");
+    for (i = 0; i < n; i++) {
+        printf("*(ptr+%d) = %d\n", i, *(ptr + i));
+    }
+
+    // Address difference
+    printf("\nAddress Difference:\n");
+    printf("Address difference between arr[%d] and arr[%d] = %ld bytes\n",
+           a, b, (long)(&arr[b] - &arr[a]) * sizeof(int));
+
+    return 0;
+}
